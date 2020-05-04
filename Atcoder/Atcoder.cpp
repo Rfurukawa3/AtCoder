@@ -42,39 +42,28 @@ inline int lcm(int a, int b) { return a * b / gcd(a, b); } // 最小公倍数
 
 signed main()
 {	
-	int N;
-	cin >> N;
-	VP LR(N);
-	int n = 1;
-	rbf(lr, LR) {
-		int a;
-		cin >> a;
-		lr = make_pair(n+a, n-a);
-		n++;
-	}
-	sort(All(LR));
-
-	VI L(N);
-	rep(i, N) {
-		L[i] = LR[i].first;
+	int N, W;
+	cin >> N >> W;
+	vector<int> v(N), w(N);
+	for (int i = 0; i < N; i++) {
+		cin >> v[i] >> w[i];
 	}
 
-	double ans = 0.0;
-	rbf(lr, LR) {
-		int R = lr.second;
-		int low = distance(L.begin(), lower_bound(All(L), R));
-		int high = distance(L.begin(), upper_bound(All(L), R));
-		if (low == N || high == 0) continue;
+    // dp[i+1][j] : i番目までの品物から重さjを超えないように選んだときの価値の最大値
+    vector<vector<int>> dp(N + 1, vector<int>(W + 1, 0));
 
-		if (lr.first >= LR[low].second && lr.first <= LR[high - 1].second) {
-			while (low < high) {
-				if (lr.first == LR[low++].second) ans += 0.5;
-				else ans += 1.0;
-			}
-		}
-		else ans += high - low;
-	}
+    // 動的計画法
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < W + 1; j++) {
+            // そもそもi番目の品物が重量オーバーの場合
+            if (w[i] > j) dp[i + 1][j] = dp[i][j];
 
-	COL(static_cast<int>(ans));
+            // dp[i][j - w[i]]は重さ制限「j - w[i]」の時にi番目の品物を0個以上入れて得た価値
+            // 重さ制限がjになった時にi番目の品物を追加するかしないかで比較する
+            else dp[i + 1][j] = max(dp[i][j], dp[i + 1][j - w[i]] + v[i]);
+        }
+    }
+
+    cout << dp[N][W] << endl;
 	return 0;
 }

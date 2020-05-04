@@ -1,4 +1,2 @@
 ﻿  Atcoder.cpp
-C:\Users\royba\source\repos\AtCoder\Atcoder\Atcoder.cpp(65,11): warning C4244: '初期化中': '__int64' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\royba\source\repos\AtCoder\Atcoder\Atcoder.cpp(66,12): warning C4244: '初期化中': '__int64' から 'int' への変換です。データが失われる可能性があります。
   Atcoder.vcxproj -> C:\Users\royba\source\repos\AtCoder\x64\Debug\Atcoder.exe
