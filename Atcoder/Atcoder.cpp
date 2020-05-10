@@ -11,10 +11,12 @@ using namespace std;
 //#define int long long
 
 using LL = long long;
+using UL = unsigned long;
 using ULL = unsigned long long;
 using PII = pair<int, int>;
 using VI = vector<int>;
 using VVI = vector<VI>;
+using VLL = vector<LL>;
 using VS = vector<string>;
 using VP = vector<PII>;
 
@@ -42,28 +44,6 @@ inline int lcm(int a, int b) { return a * b / gcd(a, b); } // 最小公倍数
 
 signed main()
 {	
-	int N, W;
-	cin >> N >> W;
-	vector<int> v(N), w(N);
-	for (int i = 0; i < N; i++) {
-		cin >> v[i] >> w[i];
-	}
 
-    // dp[i+1][j] : i番目までの品物から重さjを超えないように選んだときの価値の最大値
-    vector<vector<int>> dp(N + 1, vector<int>(W + 1, 0));
-
-    // 動的計画法
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < W + 1; j++) {
-            // そもそもi番目の品物が重量オーバーの場合
-            if (w[i] > j) dp[i + 1][j] = dp[i][j];
-
-            // dp[i][j - w[i]]は重さ制限「j - w[i]」の時にi番目の品物を0個以上入れて得た価値
-            // 重さ制限がjになった時にi番目の品物を追加するかしないかで比較する
-            else dp[i + 1][j] = max(dp[i][j], dp[i + 1][j - w[i]] + v[i]);
-        }
-    }
-
-    cout << dp[N][W] << endl;
 	return 0;
 }
