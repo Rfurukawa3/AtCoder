@@ -43,7 +43,7 @@ inline int lcm(int a, int b) { return a * b / gcd(a, b); } // 最小公倍数
 #pragma endregion
 
 signed main()
-{	
+{
 
 	return 0;
 }

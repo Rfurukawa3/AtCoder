@@ -2,6 +2,26 @@
 #include <vector>
 #include <stack>
 
+// nCk = n−1Ck−1 + n−1Ck（パスカルの三角形）を利用した組み合わせ計算関数
+template<typename T> T combination(T N, T K) {
+	if (N < K) return 0;
+	if (N == K || K == 0) return 1;
+	vector<T> v(N, 1);
+	T prev1 = 1, prev2 = 1; // prev1 = n−1Ck−1, prev2 = n−1Ck
+
+	for (T n = 2; n <= N; n++) {
+		prev1 = 1;
+		T k = 1;
+		while (k < n && k <= K) {
+			prev2 = v[k];
+			v[k++] = prev1 + prev2;
+			//v[k++] = (prev1 + prev2) % MOD; // 余りを答えるように要求された時用
+			prev1 = prev2;
+		}
+	}
+	return v[K];
+}
+
 // n種類のものから重複を許してr個選ぶ時の全パターンを辞書順に生成する
 // n >= 2, r >= 2 を想定しているのでn=1とかは例外処理が必要
 bool combination_repetition(int n, int r, std::vector<int>& idx, std::stack<std::pair<int,int>>& rn_st) {
