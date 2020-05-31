@@ -25,7 +25,7 @@ const int MOD = 1000000007;
 const LL INF64 = INT64_MAX >> 1;
 const int INF = INT_MAX >> 1;
 
-inline int sqr(int x) { return (x * x); }
+template<typename T> inline T sqr(T x) { return (x * x); }
 inline void printd(double x) { printf("%.10lf\n", x); }
 inline void upsort(VI& x) { sort((x).begin(), (x).end()); }
 inline void downsort(VI& x) { sort((x).begin(), (x).end(), greater<int>()); }
