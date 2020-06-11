@@ -1,5 +1,10 @@
 {
     "markdownlint.config": {
         "MD033": false
+    },
+    "files.associations": {
+        "limits": "cpp",
+        "xstddef": "cpp",
+        "xutility": "cpp"
     }
 }
