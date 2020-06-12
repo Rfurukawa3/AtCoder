@@ -29,5 +29,6 @@ template<> inline void col(double x) { cout << fixed << setprecision(12) << x <<
 
 signed main()
 {
+
 	return 0;
 }
