@@ -99,3 +99,25 @@ template<typename T> std::vector<T> Dijkstra(const T start, const T goal, const 
 	return minRoute;
 }
 
+// ベルマンフォード法
+template<typename T> struct edge { T u, v, cost; };
+template<typename T> std::vector<T> BellmanFord(const T start, const T V, const std::vector<edge<T>>& es) {
+	using namespace std;
+	constexpr T inf = numeric_limits<T>::max() >> 1;
+	vector<T> mincost(V, inf); // i番目のノードまでの最小コスト
+	mincost[start] = 0;
+	T i = 0;
+	// 負の閉路が存在しなければ更新回数は高々 V-1回
+	while (i++ < V) {
+		bool update = false;
+		for (auto& e : es) {
+			if (mincost[e.u] != inf && mincost[e.v] > mincost[e.u] + e.cost) {
+				mincost[e.v] = mincost[e.u] + e.cost;
+				update = true;
+				 if (i == V) return vector<T>(); // 負の閉路検出（サイズ0のvectorを返す）
+			}
+		}
+		if (!update) break;
+	}
+	return mincost;
+}
