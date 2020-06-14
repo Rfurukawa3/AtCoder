@@ -121,3 +121,19 @@ template<typename T> std::vector<T> BellmanFord(const T start, const T V, const 
 	}
 	return mincost;
 }
+
+// ワーシャル-フロイド法
+// cost[i][j] := iとjをつなぐ辺のコスト，辺がない場合はINF，ただしcost[i][i]=0
+template<typename T> void WarshallFloyd(std::vector<std::vector<T>>& cost) {
+    const T V = cost.size();
+    for (T k = 0; k < V; k++) {
+        for (T i = 0; i < V; i++) {
+            for (T j = 0; j < V; j++) {
+                // 頂点kを経由するかしないかでコストの小さいほうを採用する
+                // cost[i][j] := iからjへのコスト
+                // cost[i][k] + cost[k][j] := kを経由してiからjへ辿る場合のコスト
+                cost[i][j] = min(cost[i][j], cost[i][k] + cost[k][j]);
+            }
+        }
+    }
+}
