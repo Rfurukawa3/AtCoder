@@ -1,13 +1,2 @@
 ﻿  Atcoder.cpp
-C:\Users\royba\source\repos\AtCoder\AtCoder\Atcoder.cpp(33,1): warning C4267: '初期化中': 'size_t' から 'T' に変換しました。データが失われているかもしれません。
-          with
-          [
-              T=int
-          ]
-C:\Users\royba\source\repos\AtCoder\AtCoder\Atcoder.cpp(59): message : コンパイル対象の関数 テンプレート インスタンス化 'void WarshallFloyd<int>(std::vector<std::vector<int,std::allocator<int>>,std::allocator<std::vector<int,std::allocator<int>>>> &)' のリファレンスを確認してください
-C:\Users\royba\source\repos\AtCoder\AtCoder\Atcoder.cpp(33,1): warning C4267: '初期化中': 'size_t' から 'const T' に変換しました。データが失われているかもしれません。
-          with
-          [
-              T=int
-          ]
   Atcoder.vcxproj -> C:\Users\royba\source\repos\AtCoder\x64\Debug\Atcoder.exe
