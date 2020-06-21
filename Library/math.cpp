@@ -49,11 +49,15 @@ template<typename T> void prime_factorization(T num, std::vector<std::pair<T, T>
 // エラトステネスの篩
 template<typename T> void Eratosthenes(const T N, std::vector<T>& prime) {
     std::vector<bool> is_prime(N + 1, true);
-    for (T i = 2; i <= N; i++) {
+    T lim = ceil(sqrt(N));
+    for (T i = 2; i <= lim; i++) {
         if (is_prime[i]) {
-            for (T j = 2 * i; j <= N; j += i) is_prime[j] = false;
+            for (T j = i * i; j <= N; j += i) is_prime[j] = false;
             prime.emplace_back(i);
         }
+    }
+    for (T i = lim+1; i <= N; i++) {
+        if (is_prime[i]) prime.emplace_back(i);
     }
 }
 
@@ -143,4 +147,18 @@ template<typename T> void Eratosthenes(const T N, std::vector<T>& prime) {
             }
         }
     }
+}
+
+// 拡張ユークリッドの互除法
+// ax + by = gcd(a, b) を解く
+template<typename T> T extgcd(T a, T b, T& x, T& y) {
+    T d = a;
+    if (b != 0) {
+        d = extgcd(b, a % b, y, x);
+        y -= (a / b) * x;
+    }
+    else {
+        x = 1; y = 0;
+    }
+    return d;
 }

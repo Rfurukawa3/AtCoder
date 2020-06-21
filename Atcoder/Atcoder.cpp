@@ -27,47 +27,18 @@ template<typename T> inline void col(T x) { cout << x << '\n'; }
 template<> inline void col(double x) { cout << fixed << setprecision(12) << x << '\n'; }
 #pragma endregion
 
-template<typename T> void Eratosthenes(const T N, std::vector<T>& prime) {
-    std::vector<bool> is_prime(N + 1, true);
-    for (T i = 2; i <= N; i++) {
-        if (is_prime[i]) {
-            for (T j = 2 * i; j <= N; j += i) is_prime[j] = false;
-            prime.emplace_back(i);
-        }
-    }
-}
-
 signed main()
 {
-    const int yn = 200000;
-    int n, q;
-    cin >> n >> q;
-    V<priority_queue<int>> you(yn);
-    VP<int> enji(n);
-    VV<int> del(yn);
-    REP(i, n) {
-        int a, b;
-        cin >> a >> b;
-        you[b - 1].push(a);
-        enji[i] = make_pair(a, b - 1);
+    int n;
+    cin >> n;
+    V<int> a(n);
+    RBF(ai,a) cin >> ai;
+    int total = 0;
+    RBF(ai, a) total ^= ai;
+    RBF(ai, a) {
+        int ans = ai ^ total;
+        cout << ans << ' ';
     }
-    priority_queue<int, V<int>, greater<int>> byo;
-
-    RBF(y, you) {
-        if (!y.empty()) {
-            byo.push(y.top());
-        }
-    }
-
-    REP(i, q) {
-        int c, d;
-        cin >> c >> d;
-        c--; d--;
-        del[enji[c].second].emplace_back(enji[c].first);
-        if (enji[c].first == byo.top()) byo.pop();
-        you[d].push(enji[c].first);
-
-    }
-
+    cout << endl;
     return 0;
 }
