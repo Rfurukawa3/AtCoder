@@ -27,18 +27,7 @@ template<typename T> inline void col(T x) { cout << x << '\n'; }
 template<> inline void col(double x) { cout << fixed << setprecision(12) << x << '\n'; }
 #pragma endregion
 
-signed main()
-{
-    int n;
-    cin >> n;
-    V<int> a(n);
-    RBF(ai,a) cin >> ai;
-    int total = 0;
-    RBF(ai, a) total ^= ai;
-    RBF(ai, a) {
-        int ans = ai ^ total;
-        cout << ans << ' ';
-    }
-    cout << endl;
+signed main() {
+
     return 0;
 }

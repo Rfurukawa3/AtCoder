@@ -47,8 +47,19 @@ template<typename T> void prime_factorization(T num, std::vector<std::pair<T, T>
 }
 
 // エラトステネスの篩
-template<typename T> void Eratosthenes(const T N, std::vector<T>& prime) {
-    std::vector<bool> is_prime(N + 1, true);
+// [0, N]の範囲の素数をリスト化
+std::vector<bool> is_prime;
+std::vector<int> prime;
+template<typename T> void Eratosthenes(const T N) {
+    if (N < 2) {
+        is_prime = std::vector<bool>(N + 1, false);
+        prime = std::vector<T>();
+        return;
+    }
+    is_prime = std::vector<bool>(N + 1, true);
+    is_prime[0] = false;
+    is_prime[1] = false;
+    prime = std::vector<T>();
     T lim = ceil(sqrt(N));
     for (T i = 2; i <= lim; i++) {
         if (is_prime[i]) {
@@ -56,15 +67,68 @@ template<typename T> void Eratosthenes(const T N, std::vector<T>& prime) {
             prime.emplace_back(i);
         }
     }
-    for (T i = lim+1; i <= N; i++) {
+    for (T i = lim + 1; i <= N; i++) {
         if (is_prime[i]) prime.emplace_back(i);
     }
 }
 
+// 区間篩
+// 区間[a, b)の素数を求める, bは含まない
+std::vector<bool> is_prime;
+std::vector<int> prime;
+template<typename T> void segment_sieve(const T a, const T b) {
+    prime = std::vector<T>();
+    if (a >= b) {
+        is_prime =  std::vector<bool>();
+        return;
+    }
+    T lim = ceil(sqrt(b));
+    is_prime = std::vector<bool>(b - a, true); // is_prime[i-a] = true ⇔ iが素数
+    std::vector<bool> is_prime_small(lim, true);
+    for (T i = 2; i < lim; i++) {
+        if (is_prime_small[i]) {
+            for (T j = i * i; j < lim; j += i) is_prime_small[j] = false; // [2, √b)の篩
+            for (T j = std::max(i, (a + i - 1) / i) * i; j < b; j += i) is_prime[j] = false; // [a, b)の篩
+        }
+    }
+    for (T i = 0; i < b - a; i++) {
+        if (is_prime[i]) prime.emplace_back(i + a);
+    }
+}
+
+// 拡張ユークリッドの互除法
+// ax + by = gcd(a, b) を解く
+template<typename T> T extgcd(T a, T b, T& x, T& y) {
+    T d = a;
+    if (b != 0) {
+        d = extgcd(b, a % b, y, x);
+        y -= (a / b) * x;
+    }
+    else {
+        x = 1; y = 0;
+    }
+    return d;
+}
+
+// 繰り返し二乗法
+// x^22 = x^(2^4) * x^(2^2) * x^(2^1)のように見なすことで高速にべき乗を計算する（22は2進数で10110）
+template<typename T> T mod_pow(T x, T n, T mod) {
+    T res = 1;
+    while (n > 0) {
+        if (n & 1) res = res * x % mod; // 最下位ビットが立っているときにx^(2^i)をかける
+        x = x * x % mod;
+        n >>= 1;
+    }
+    return res;
+}
+
 // エラトステネスの篩(高速版)
 // https://qiita.com/peria/items/54499b9ce9d5c1e93e5a
-template<typename T> void Eratosthenes(const T N, std::vector<T>& prime) {
+std::vector<unsigned char> is_prime;
+std::vector<int> prime;
+template<typename T> void Eratosthenes(const T N) {
     if (N < 2) {
+        prime = std::vector<T>();
         return;
     }
     if (N < 3) {
@@ -84,7 +148,7 @@ template<typename T> void Eratosthenes(const T N, std::vector<T>& prime) {
     // 2,3,5の倍数を排除した30k + {1,7,11,13,17,19,23,29} について篩をかける
     using UC = unsigned char;
     const std::vector<T> m{ 1,7,11,13,17,19,23,29 };
-    std::vector<UC> is_prime(N / 30 + 1, 255u); 
+    is_prime = std::vector<UC>(N / 30 + 1, 255u); 
     is_prime[0]--; 
     T kmax = static_cast<T>(ceil((sqrt(static_cast<double>(N)) - 29.0) / 30.0));
 
@@ -147,18 +211,4 @@ template<typename T> void Eratosthenes(const T N, std::vector<T>& prime) {
             }
         }
     }
-}
-
-// 拡張ユークリッドの互除法
-// ax + by = gcd(a, b) を解く
-template<typename T> T extgcd(T a, T b, T& x, T& y) {
-    T d = a;
-    if (b != 0) {
-        d = extgcd(b, a % b, y, x);
-        y -= (a / b) * x;
-    }
-    else {
-        x = 1; y = 0;
-    }
-    return d;
 }

@@ -1,6 +1,8 @@
 #include <queue>
 
 // Union-Find木
+// グループ分け用の木構造
+// 同じ集合に属するかの判定と集合の併合機能を持つ
 template<typename T> struct UnionFind {
     std::vector<T> par;
     std::vector<T> rank;
@@ -40,6 +42,8 @@ template<typename T> struct UnionFind {
 };
 
 // 最小全域木（クラスカル法）
+// 全域木 := 全ての点が互いに辿り着ける
+// 最小全域木 := 全域木の中でコストが最小のもの
 // 構造体edge := 辺の情報（u, v := 繋ぐ頂点，cost := 辺のコスト）
 // V := 頂点数
 template<typename T> struct edge { T u, v, cost; };
@@ -58,6 +62,7 @@ template<typename T> T kruskal(std::vector<edge<T>>& es, T V) {
 }
 
 // ダイクストラ法
+// ある点から各点への最小コストを求める、負のコストがあったらダメ
 // graph[i]はi番目のノードから繋がるノードとそのコストを格納する std::pair<コスト，ノード>
 template<typename T> std::vector<T> Dijkstra(const T start, const T goal, const std::vector<std::vector<std::pair<T,T>>>& graph) {
 	using namespace std;
@@ -100,6 +105,8 @@ template<typename T> std::vector<T> Dijkstra(const T start, const T goal, const 
 }
 
 // ベルマンフォード法
+// ある点から各点への最小コストを求める、負のコストがあってもOK
+// 負の閉路検出にも
 template<typename T> struct edge { T u, v, cost; };
 template<typename T> std::vector<T> BellmanFord(const T start, const T V, const std::vector<edge<T>>& es) {
 	using namespace std;
@@ -123,6 +130,7 @@ template<typename T> std::vector<T> BellmanFord(const T start, const T V, const 
 }
 
 // ワーシャル-フロイド法
+// 全点間の最小コストを求める
 // cost[i][j] := iとjをつなぐ辺のコスト，辺がない場合はINF，ただしcost[i][i]=0
 template<typename T> void WarshallFloyd(std::vector<std::vector<T>>& cost) {
     const T V = cost.size();
