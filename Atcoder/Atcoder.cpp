@@ -28,6 +28,21 @@ template<> inline void col(double x) { cout << fixed << setprecision(12) << x <<
 #pragma endregion
 
 signed main() {
+    int N, Y;
+    cin >> N >> Y;
 
+    int z = -1;
+    for (int x = 0; x <= N; x++) {
+        for (int y = 0; y <= N; y++) {
+            z = (Y - 10000 * x - 5000 * y) / 1000;
+            if (z < 0) continue;
+            if (x + y + z == N) {
+                cout << x << ' ' << y << ' ' << z << endl;
+                return 0;
+            }
+        }
+    }
+
+    cout << "-1 -1 -1\n";
     return 0;
 }
