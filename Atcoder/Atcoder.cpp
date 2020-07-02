@@ -27,22 +27,51 @@ template<typename T> inline void col(T x) { cout << x << '\n'; }
 template<> inline void col(double x) { cout << fixed << setprecision(12) << x << '\n'; }
 #pragma endregion
 
-signed main() {
-    int N, Y;
-    cin >> N >> Y;
+signed main()
+{
+	int n, m;
+	cin >> n >> m;
+	vector<vector<int>> g(n);
+	for (int i = 0; i < m; i++)
+	{
+		int u, v;
+		cin >> u >> v;
+		u--; v--;
+		g[u].emplace_back(v);
+		g[v].emplace_back(u);
+	}
 
-    int z = -1;
-    for (int x = 0; x <= N; x++) {
-        for (int y = 0; y <= N; y++) {
-            z = (Y - 10000 * x - 5000 * y) / 1000;
-            if (z < 0) continue;
-            if (x + y + z == N) {
-                cout << x << ' ' << y << ' ' << z << endl;
-                return 0;
-            }
-        }
-    }
+	int ans = 0;
+	vector<bool> seen(n, false);
+	for (int i = 0; i < n; i++)
+	{
+		if (!seen[i]) {
+			// first := 現在のノード, second := 直前に訪問したノード
+			stack<pair<int,int>> st;
+			st.push({ i,-1 });
+			seen[i] = true;
+			bool roop = false;
 
-    cout << "-1 -1 -1\n";
-    return 0;
+			while (!st.empty()) {
+				int now = st.top().first, prev = st.top().second;
+				st.pop();
+
+				for (auto& gi : g[now]) {
+					if (!seen[gi]) {
+						st.push({ gi, now });
+						seen[gi] = true;
+					}
+					else {
+						// 直前に訪問したわけでもないのに訪問済だったら閉路が存在する
+						if (gi != prev) roop = true;
+					}
+				}
+			}
+
+			if (!roop) ans++;
+		}
+	}
+
+	cout << ans << endl;
+	return 0;
 }
