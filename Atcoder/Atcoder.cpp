@@ -28,29 +28,48 @@ template<> inline void col(double x) { cout << fixed << setprecision(12) << x <<
 
 signed main()
 {
-	int n;
-	cin >> n;
-	vector<int> a(n), b(n);
-	for (auto& ai : a) cin >> ai;
-	for (auto& bi : b) cin >> bi;
-	sort(a.begin(), a.end());
-	sort(b.begin(), b.end());
-	vector<int> b0(b);
+	int n, k;
+	string s;
+	cin >> n >> k >> s;
+	string smin(s), t(n, '.');
+	sort(smin.begin(), smin.end());
 
-	int win = 0, all = 0;
-	do {
-		b = b0;
-		do {
-			int awin = 0, bwin = 0;
-			for (int i = 0; i < n; i++) {
-				if (a[i] > b[i]) awin++;
-				else bwin++;
+	int k0 = 0;
+	for (int i = 0; i < n; i++) { // t[i]を決める
+		for (int j = 0; j < n; j++) { // t[i]に入れる文字を小さい順に検証
+			if (smin[j] == '.') continue; // 使用済みか否かをチェック
+
+			// ktmp := t[i] = smin[j] とした時の最小の不一致数
+			int ktmp = k0;
+			if (s[i] != smin[j]) ktmp++;
+
+			// 未使用の文字がs[i+1]以降の文字列と何文字一致させられるか調べる
+			// abc1 := s[i+1]以降の文字列における各アルファベットの登場回数
+			// abc2 := 未使用の文字における各アルファベットの登場回数
+			vector<int> abc1(26, 0), abc2(26, 0);
+			for (int m = i+1; m < n; m++) {
+				abc1[s[m] - 'a']++;
 			}
-			if (awin > bwin) win++;
-			all++;
-		} while (next_permutation(b.begin(), b.end()));
-	} while (next_permutation(a.begin(), a.end()));
+			for (int m = 0; m < n; m++) {
+				if (smin[m] == '.' || m == j) continue;
+				abc2[smin[m] - 'a']++;
+			}
+			int match = 0;
+			for (int m = 0; m < 26; m++) {
+				// abc1[0]=2, abc2[0]=4 の時、'a'2文字分は一致させられる
+				match += min(abc1[m], abc2[m]);
+			}
 
-	cout << static_cast<double>(win) / all << '\n';
+			ktmp += n - i - 1 - match;
+			if (ktmp <= k) {
+				if (s[i] != smin[j]) k0++;
+				t[i] = smin[j];
+				smin[j] = '.';
+				break;
+			}
+		}
+	}
+
+	cout << t << endl;
 	return 0;
 }
