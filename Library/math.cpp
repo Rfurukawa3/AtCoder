@@ -122,6 +122,28 @@ template<typename T> T mod_pow(T x, T n, T mod) {
     return res;
 }
 
+// いもす法
+// ある区間(range)内における複数の矩形関数(ku)の累積和を求める
+// 矩形関数は [begin, end) の範囲で値がvalになる関数
+template<typename T> struct kukei {
+	T begin, end, val;
+	kukei() : begin(0), end(0), val(1) {}
+};
+template<typename T> std::vector<T> imos(T range, std::vector<kukei<T>>& ku) {
+	T n = ku.size();
+	std::vector<int> acc(range, 0);
+
+	for (int i = 0; i < n; i++) {
+		acc[ku[i].begin] += ku[i].val;
+		if (ku[i].end < range) acc[ku[i].end] -= ku[i].val;
+	}
+	for (int i = 1; i < range; i++) {
+		acc[i] += acc[i - 1];
+	}
+
+	return acc;
+}
+
 // エラトステネスの篩(高速版)
 // https://qiita.com/peria/items/54499b9ce9d5c1e93e5a
 std::vector<unsigned char> is_prime;
