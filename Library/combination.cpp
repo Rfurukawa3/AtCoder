@@ -4,6 +4,7 @@
 #include <algorithm>
 
 // nCk = n−1Ck−1 + n−1Ck（パスカルの三角形）を利用した組み合わせ計算関数
+// 計算量は O(NK) なのでN,Kが小さい時用
 template<typename T> T combination(T N, T K) {
 	if (N < K) return 0;
 	if (N == K || K == 0) return 1;
@@ -21,6 +22,38 @@ template<typename T> T combination(T N, T K) {
 		}
 	}
 	return v[K];
+}
+
+// 計算量O(k)でnCkのmodを計算する
+// modが素数であることが使用条件
+// combination_init()にkの最大値を与えて前処理を行ってからcombanation()でnCkを計算する
+// nが固定値の場合はcombination_init()にそのnを与えればcom[k]にnCkの計算結果を保持してくれる
+std::vector<int64_t> inv, fact_inv, com;
+void combination_init(int64_t k_max, int64_t mod, int64_t n = -1) {
+	int64_t size = k_max + 5;
+	inv = std::vector<int64_t>(size);
+	fact_inv = std::vector<int64_t>(size);
+	inv[1] = 1;
+	fact_inv[0] = fact_inv[1] = 1;
+	for (int64_t i = 2; i < size; i++) {
+		inv[i] = mod - inv[mod % i] * (mod / i) % mod;
+		fact_inv[i] = fact_inv[i - 1] * inv[i] % mod;
+	}
+	if (n >= 0) {
+		com = std::vector<int64_t>(size);
+		com[0] = 1;
+		for (int64_t i = 1; i < size; i++) {
+			com[i] = com[i - 1] * ((n - i + 1) * inv[i] % mod) % mod;
+		}
+	}
+}
+int64_t combination(int64_t n, int64_t k, int64_t mod) {
+	int64_t ans = 1;
+	for (int64_t i = n; i >= n - k + 1; i--) {
+		ans *= i;
+		ans %= mod;
+	}
+	return ans * fact_inv[k] % mod;
 }
 
 // n種類のものから重複を許してr個選ぶ時の全パターンを辞書順に生成する
