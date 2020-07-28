@@ -77,23 +77,23 @@ template<typename T> void Eratosthenes(const T N) {
 std::vector<bool> is_prime;
 std::vector<int> prime;
 template<typename T> void segment_sieve(const T a, const T b) {
-    prime = std::vector<T>();
-    if (a >= b) {
-        is_prime =  std::vector<bool>();
-        return;
-    }
-    T lim = ceil(sqrt(b));
-    is_prime = std::vector<bool>(b - a, true); // is_prime[i-a] = true ⇔ iが素数
-    std::vector<bool> is_prime_small(lim, true);
-    for (T i = 2; i < lim; i++) {
-        if (is_prime_small[i]) {
-            for (T j = i * i; j < lim; j += i) is_prime_small[j] = false; // [2, √b)の篩
-            for (T j = std::max(i, (a + i - 1) / i) * i; j < b; j += i) is_prime[j] = false; // [a, b)の篩
-        }
-    }
-    for (T i = 0; i < b - a; i++) {
-        if (is_prime[i]) prime.emplace_back(i + a);
-    }
+	prime = std::vector<T>();
+	if (a >= b) {
+		is_prime = std::vector<bool>();
+		return;
+	}
+	T lim = ceil(sqrt(b));
+	is_prime = std::vector<bool>(b - a, true); // is_prime[i-a] = true ⇔ iが素数
+	std::vector<bool> is_prime_small(lim, true);
+	for (T i = 2; i < lim; i++) {
+		if (is_prime_small[i]) {
+			for (T j = i * i; j < lim; j += i) is_prime_small[j] = false; // [2, √b)の篩
+			for (T j = std::max(i, (a + i - 1) / i) * i; j < b; j += i) is_prime[j - a] = false; // [a, b)の篩
+		}
+	}
+	for (T i = 0; i < b - a; i++) {
+		if (is_prime[i]) prime.emplace_back(i + a);
+	}
 }
 
 // 拡張ユークリッドの互除法
