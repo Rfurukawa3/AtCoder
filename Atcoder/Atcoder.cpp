@@ -8,7 +8,7 @@ struct ios_accelerate { ios_accelerate() { ios::sync_with_stdio(false); cin.tie(
 #define ALL(x) (x).begin(), (x).end()
 
 using LL = long long;
-using UL = unsigned long;
+using UL = unsigned;
 using ULL = unsigned long long;
 template<typename T> using V = vector<T>;
 template<typename T> using VV = vector<vector<T>>;
@@ -25,12 +25,40 @@ template<typename T> inline void col(T x) { cout << x << '\n'; }
 template<> inline void col(double x) { cout << fixed << setprecision(12) << x << '\n'; }
 
 signed main() {
-	int a, b;
-	cin >> a >> b;
+	LL n, k;
+	cin >> n >> k;
+	map<LL, LL> logs;
+	REP(i, n) {
+		LL a;
+		cin >> a;
+		if (logs.find(a) == logs.end()) {
+			logs[a] = 1;
+		}
+		else {
+			logs[a]++;
+		}
+	}
 
-	int ans = a - 2 * b;
-	if (ans < 0) ans = 0;
-	col(ans);
+	while (k > 0) {
+		auto itr = logs.rbegin();
+		k -= (*itr).second;
+		if(k<0){
+			col((*logs.rbegin()).first);
+			return 0;
+		}
 
+		LL len = (*itr).first / 2.0;
+		LL num = (*itr).second * 2;
+		logs.erase((*itr).first);
+
+		if (logs.find(len) == logs.end()) {
+			logs[len] = num;
+		}
+		else {
+			logs[len] += num;
+		}
+	}
+
+	col((*logs.rbegin()).first);
 	return 0;
 }
