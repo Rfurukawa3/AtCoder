@@ -24,41 +24,71 @@ template<typename T> inline void downsort(vector<T>& x) { sort(x.begin(), x.end(
 template<typename T> inline void col(T x) { cout << x << '\n'; }
 template<> inline void col(double x) { cout << fixed << setprecision(12) << x << '\n'; }
 
+LL n, k;
+V<LL> a;
+
+template<typename T> bool judge(T x) {
+	bool ans;
+
+	LL cnt = 0;
+	RBF(i, a) {
+		LL tmp = ceil(static_cast<double>(i) / x) - 1;
+		cnt += tmp;
+	}
+	if (cnt > k) {
+		ans = false;
+	}
+	else {
+		ans = true;
+	}
+
+	return ans;
+}
+// 範囲[a, b]の連続する整数のなかで，judge(x)=trueとなる最小のxを二分探索で求める
+template<typename T> T bin_search_min(T a, T b) {
+	if (a > b) {
+		return bin_search_min(b, a);
+	}
+
+	T x = (b - a) / 2;
+	T d = max(static_cast<T>(1), (b - a) / 4);
+	T cnt = 0;
+	T lim = log2(b - a) + 10;
+
+	while (cnt < lim) {
+		if (judge(x)) {
+			x -= d;
+		}
+		else {
+			x += d;
+		}
+		d = max(static_cast<T>(1), d / 2);
+		cnt++;
+	}
+
+	if (x < a) {
+		x = a;
+	}
+	while(!judge(x) && x <= b) {
+		x++;
+	}
+
+	// x > bならjudge(x)=trueとなるxが存在しなかったことを意味する
+	return x;
+}
+
 signed main() {
-	LL n, k;
 	cin >> n >> k;
-	map<LL, LL> logs;
+	a = V<LL>(n);
+	LL b = 0;
 	REP(i, n) {
-		LL a;
-		cin >> a;
-		if (logs.find(a) == logs.end()) {
-			logs[a] = 1;
-		}
-		else {
-			logs[a]++;
-		}
+		LL tmp;
+		cin >> tmp;
+		a[i] = tmp;
+		b = max(b, tmp);
 	}
 
-	while (k > 0) {
-		auto itr = logs.rbegin();
-		k -= (*itr).second;
-		if(k<0){
-			col((*logs.rbegin()).first);
-			return 0;
-		}
-
-		LL len = (*itr).first / 2.0;
-		LL num = (*itr).second * 2;
-		logs.erase((*itr).first);
-
-		if (logs.find(len) == logs.end()) {
-			logs[len] = num;
-		}
-		else {
-			logs[len] += num;
-		}
-	}
-
-	col((*logs.rbegin()).first);
+	LL ans = bin_search_min(1ll, b);
+	col(ans);
 	return 0;
 }
