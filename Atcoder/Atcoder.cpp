@@ -50,8 +50,8 @@ template<typename T> T bin_search_min(T a, T b) {
 		return bin_search_min(b, a);
 	}
 
-	T x = (b - a) / 2;
-	T d = max(static_cast<T>(1), (b - a) / 4);
+	T x = b;
+	T d = max(static_cast<T>(1), (b - a) / 2 + (b - a) % 2);
 	T cnt = 0;
 	T lim = log2(b - a) + 10;
 
@@ -62,7 +62,19 @@ template<typename T> T bin_search_min(T a, T b) {
 		else {
 			x += d;
 		}
-		d = max(static_cast<T>(1), d / 2);
+		if (x < a) {
+			x = a;
+			if (judge(x)) {
+				break;
+			}
+		}
+		if (x > b) {
+			x = b;
+			if (!judge(x)) {
+				break;
+			}
+		}
+		d = d / 2 + d % 2;
 		cnt++;
 	}
 

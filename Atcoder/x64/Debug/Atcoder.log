@@ -1,23 +1,23 @@
 ﻿  Atcoder.cpp
-D:\source\repos\AtCoder\AtCoder\Atcoder.cpp(56,8): warning C4244: '初期化中': 'double' から 'T' への変換です。データが失われる可能性があります。
+C:\Users\royba\source\repos\AtCoder\Atcoder\Atcoder.cpp(56,8): warning C4244: '初期化中': 'double' から 'T' への変換です。データが失われる可能性があります。
           with
           [
               T=__int64
           ]
-D:\source\repos\AtCoder\AtCoder\Atcoder.cpp(91): message : コンパイル対象の関数 テンプレート インスタンス化 'T bin_search_min<__int64>(T,T)' のリファレンスを確認してください
+C:\Users\royba\source\repos\AtCoder\Atcoder\Atcoder.cpp(104): message : コンパイル対象の関数 テンプレート インスタンス化 'T bin_search_min<__int64>(T,T)' のリファレンスを確認してください
           with
           [
               T=__int64
           ]
-D:\source\repos\AtCoder\AtCoder\Atcoder.cpp(35,10): warning C4244: '初期化中': 'double' から 'LL' への変換です。データが失われる可能性があります。
-D:\source\repos\AtCoder\AtCoder\Atcoder.cpp(59): message : コンパイル対象の関数 テンプレート インスタンス化 'bool judge<T>(T)' のリファレンスを確認してください
+C:\Users\royba\source\repos\AtCoder\Atcoder\Atcoder.cpp(35,10): warning C4244: '初期化中': 'double' から 'LL' への変換です。データが失われる可能性があります。
+C:\Users\royba\source\repos\AtCoder\Atcoder\Atcoder.cpp(59): message : コンパイル対象の関数 テンプレート インスタンス化 'bool judge<T>(T)' のリファレンスを確認してください
           with
           [
               T=__int64
           ]
-D:\source\repos\AtCoder\AtCoder\Atcoder.cpp(91): message : コンパイル対象の関数 テンプレート インスタンス化 'T bin_search_min<__int64>(T,T)' のリファレンスを確認してください
+C:\Users\royba\source\repos\AtCoder\Atcoder\Atcoder.cpp(104): message : コンパイル対象の関数 テンプレート インスタンス化 'T bin_search_min<__int64>(T,T)' のリファレンスを確認してください
           with
           [
               T=__int64
           ]
-  Atcoder.vcxproj -> D:\source\repos\AtCoder\x64\Debug\Atcoder.exe
+  Atcoder.vcxproj -> C:\Users\royba\source\repos\AtCoder\x64\Debug\Atcoder.exe
