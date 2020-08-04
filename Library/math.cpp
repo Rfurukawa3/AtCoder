@@ -18,7 +18,8 @@ template<typename T> T gcd(T a, T b) {
 template<typename T> inline T lcm(T a, T b) { return a * b / gcd(a, b); }
 
 // numを素因数分解してprime_factorに結果を格納する
-template<typename T> void prime_factorization(T num, std::vector<std::pair<T, T>>& prime_factor) {
+std::vector<std::pair<int, int>> prime_factor;
+template<typename T> void prime_factorization(T num) {
 	T L = static_cast<T>(ceil(sqrt(num)));
 	for (T x = 2; x <= L; x++) {
 		bool flg = false;
@@ -33,7 +34,8 @@ template<typename T> void prime_factorization(T num, std::vector<std::pair<T, T>
 	if (num > 1) prime_factor.emplace_back(make_pair(num, 1));
 }
 // 素数リストあり
-template<typename T> void prime_factorization(T num, std::vector<std::pair<T, T>>& prime_factor, const std::vector<T>& prime) {
+std::vector<std::pair<int, int>> prime_factor;
+template<typename T> void prime_factorization(T num, const std::vector<T>& prime) {
 	for (auto& x : prime) {
 		bool flg = false;
 		while (num % x == 0) {	

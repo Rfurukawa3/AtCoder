@@ -24,83 +24,39 @@ template<typename T> inline void downsort(vector<T>& x) { sort(x.begin(), x.end(
 template<typename T> inline void col(T x) { cout << x << '\n'; }
 template<> inline void col(double x) { cout << fixed << setprecision(12) << x << '\n'; }
 
-LL n, k;
-V<LL> a;
-
-template<typename T> bool judge(T x) {
-	bool ans;
-
-	LL cnt = 0;
-	RBF(i, a) {
-		LL tmp = ceil(static_cast<double>(i) / x) - 1;
-		cnt += tmp;
+template<typename T> T gcd(T a, T b) {
+	if (a < b) return gcd(b, a);
+	T r;
+	while ((r = a % b)) {
+		a = b;
+		b = r;
 	}
-	if (cnt > k) {
-		ans = false;
-	}
-	else {
-		ans = true;
-	}
-
-	return ans;
+	return b;
 }
-// 範囲[a, b]の連続する整数のなかで，judge(x)=trueとなる最小のxを二分探索で求める
-template<typename T> T bin_search_min(T a, T b) {
-	if (a > b) {
-		return bin_search_min(b, a);
-	}
 
-	T x = b;
-	T d = max(static_cast<T>(1), (b - a) / 2 + (b - a) % 2);
-	T cnt = 0;
-	T lim = log2(b - a) + 10;
-
-	while (cnt < lim) {
-		if (judge(x)) {
-			x -= d;
+std::vector<std::pair<LL, LL>> prime_factor;
+template<typename T> void prime_factorization(T num) {
+	T L = static_cast<T>(ceil(sqrt(num)));
+	for (T x = 2; x <= L; x++) {
+		bool flg = false;
+		while (num % x == 0) {
+			if (flg) prime_factor.back().second++;
+			else prime_factor.emplace_back(make_pair(x, 1));
+			flg = true;
+			num /= x;
 		}
-		else {
-			x += d;
-		}
-		if (x < a) {
-			x = a;
-			if (judge(x)) {
-				break;
-			}
-		}
-		if (x > b) {
-			x = b;
-			if (!judge(x)) {
-				break;
-			}
-		}
-		d = d / 2 + d % 2;
-		cnt++;
+		if (num == 1) break;
 	}
-
-	if (x < a) {
-		x = a;
-	}
-	while(!judge(x) && x <= b) {
-		x++;
-	}
-
-	// x > bならjudge(x)=trueとなるxが存在しなかったことを意味する
-	return x;
+	if (num > 1) prime_factor.emplace_back(make_pair(num, 1));
 }
 
 signed main() {
-	cin >> n >> k;
-	a = V<LL>(n);
-	LL b = 0;
-	REP(i, n) {
-		LL tmp;
-		cin >> tmp;
-		a[i] = tmp;
-		b = max(b, tmp);
-	}
-
-	LL ans = bin_search_min(1ll, b);
+	LL a, b;
+	cin >> a >> b;
+	
+	LL c = gcd(a, b);
+	prime_factorization(c);
+	LL ans = prime_factor.size() + 1;
 	col(ans);
 	return 0;
 }
